@@ -1,6 +1,12 @@
 # Monte Carlo
 Motivated by the book Mathletics
 
+Currently, this is used to calculate Runs Created for Mike Trout in 2016.
+
+TODO:
+- Calculate RC for any player from any year
+- Determine where to pull stats for players
+
 ```bash
 # clone
 git clone git@github.com:matthewhatch/monte_carlo.git

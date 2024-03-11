@@ -2,7 +2,7 @@
 # Rules:
 # Based on Players Stats, we can determine the probability of each outcome
 import argparse
-from Player import Player
+from classes.Player import Player
 from constants.players import TROUT16
 
 def simulate_inning(player):
