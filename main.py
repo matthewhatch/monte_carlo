@@ -3,6 +3,7 @@
 # Based on Players Stats, we can determine the probability of each outcome
 import argparse
 from Player import Player
+from constants.players import TROUT16
 
 def simulate_inning(player):
     runs = 0
@@ -16,8 +17,8 @@ def simulate_inning(player):
 def simulate_game(player):
     runs = 0
     for _ in range(0,9):
-        results = simulate_inning(player)
-        runs = runs + results
+        inning_runs = simulate_inning(player)
+        runs = runs + inning_runs
     return runs
 
 if __name__ == '__main__':
@@ -27,7 +28,7 @@ if __name__ == '__main__':
 
     simulations = args.count
     total_runs = 0
-    trout = Player(681, 554, 10, 234, 137, 118, 11, 107, 32, 5, 29)
+    trout = Player(*TROUT16)
 
     for _ in range(0, simulations):
         runs_scored = simulate_game(trout)

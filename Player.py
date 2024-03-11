@@ -1,5 +1,6 @@
 import numpy as np
-from events import single, double, triple, home_run, error, free_pass, out_in_play, strike_out
+from events import *#single, double, triple, home_run, error, free_pass, out_in_play, strike_out
+from constants.events import *
 
 class Player():
     def __init__(
@@ -46,24 +47,24 @@ class Player():
         new_state = [current_state[0],0,0,0]
         runs_scored = 0
 
-        outcomes = ['Error', 'Out', 'Strike Out', 'Walk', 'HBP', 'Single', 'Double', 'Triple', 'Home Run']
+        outcomes = [ERROR, OUT, K, BB, HBP, SINGLE, DOUBLE, TRIPLE, HOME_RUN]
         outcome = np.random.choice(outcomes, p=self.probabilities)
 
-        if outcome == 'Home Run':
+        if outcome == HOME_RUN:
             new_state, runs_scored = home_run(current_state)
-        elif outcome == 'Triple':
+        elif outcome == TRIPLE:
             new_state, runs_scored = triple(current_state)
-        elif outcome == 'Double':
+        elif outcome == DOUBLE:
             new_state, runs_scored = double(current_state)
-        elif outcome == 'Error':
+        elif outcome == ERROR:
             new_state, runs_scored = error(current_state)
-        elif outcome == 'Walk' or outcome == 'HBP':
+        elif outcome == BB or outcome == HBP:
             new_state, runs_scored = free_pass(current_state)
-        elif outcome == 'Single':
+        elif outcome == SINGLE:
             new_state, runs_scored = single(current_state)
-        elif outcome == 'Strike Out':
+        elif outcome == K:
             new_state, runs_scored = strike_out(current_state)
-        elif outcome == 'Out':
+        elif outcome == OUT:
             new_state, runs_scored = out_in_play(current_state)
         else:
             new_state = current_state
