@@ -1,20 +1,21 @@
 import numpy as np
+from constants.events import *
 
 def single(current_state):
-    types = ['Short', 'Medium', 'Long']
+    types = [SHORT_SINGLE, MEDIUM_SINGLE, LONG_SINGLE]
     probabilities = [.2, .5, .3]
     type = np.random.choice(types, p=probabilities)
 
     new_state = [current_state[0],0,0,0]
     runs_scored = 0
     
-    if type == 'Short':
+    if type == SHORT_SINGLE:
         new_state, runs_scored = short_single(current_state)
 
-    if type == 'Medium':
+    if type == MEDIUM_SINGLE:
         new_state, runs_scored = medium_single(current_state)
     
-    if type == 'Long':
+    if type == LONG_SINGLE:
         new_state, runs_scored = long_single(current_state)
 
     return new_state, runs_scored
@@ -58,16 +59,16 @@ def long_single(current_state):
     return new_state, runs_scored
 
 def double(current_state):
-    types = ['Short', 'Long']
+    types = [SHORT_DOUBLE, LONG_DOUBLE]
     probabilities = [.8, .2]
     type = np.random.choice(types, p=probabilities)
     new_state = [current_state[0],0,0,0]
     runs_scored = 0
 
-    if type == 'Short':
+    if type == SHORT_DOUBLE:
         new_state, runs_scored = short_double(current_state)
 
-    if type == 'Long':
+    if type == LONG_DOUBLE:
         new_state, runs_scored = long_double(current_state)
 
     return new_state, runs_scored
@@ -147,18 +148,18 @@ def free_pass(current_state):
     return new_state, runs_scored
 
 def out_in_play(current_state):
-    types = ['Ground', 'Line', 'Fly']
+    types = [GROUND_OUT, LINE_OUT, FLY_OUT]
     probabilities = [.538, .153, .309]
     type = np.random.choice(types, p=probabilities)
 
     # new_state = [current_state[0], 0,0,0]
     # runs_scored = 0
 
-    if type == 'Fly':
+    if type == FLY_OUT:
         new_state, runs_scored = fly_ball(current_state)
-    elif type == 'Ground':
+    elif type == GROUND_OUT:
         new_state, runs_scored = ground_ball(current_state)
-    elif 'Line':
+    elif LINE_OUT:
         # add an out, and players stay
         new_state = [current_state[0] + 1, current_state[1], current_state[2], current_state[3]]
         runs_scored = 0
@@ -170,13 +171,13 @@ def strike_out(current_state):
     return new_state, 0
 
 def ground_ball(current_state):
-    types = ['GO', 'GIDP']
+    types = [GROUND_OUT, GIDP]
     probabilities = [.5, .5]
     type = np.random.choice(types, p=probabilities)
 
-    if type == 'GO':
+    if type == GROUND_OUT:
         new_state, runs_scored = ground_out(current_state)
-    if type == 'GIDP':
+    if type == GIDP:
         new_state, runs_scored = gidp(current_state)
     
     return new_state, runs_scored
@@ -260,19 +261,19 @@ def gidp(current_state):
     return new_state, runs_scored
 
 def fly_ball(current_state):
-    types = ['Short', 'Medium', 'Long']
+    types = [SHORT_FLY, MEDIUM_FLY, LONG_FLY]
     probabilities = [.3, .5, .2]
     type = np.random.choice(types, p=probabilities)
     runs_scored = 0
     new_state = [current_state[0], 0, 0, 0]
 
-    if type == 'Short':
+    if type == SHORT_FLY:
         new_state, runs_scored = short_fly(current_state)
     
-    if type == 'Medium':
+    if type == MEDIUM_FLY:
         new_state, runs_scored = medium_fly(current_state)
 
-    if type == 'Long':
+    if type == LONG_FLY:
         new_state, runs_scored = long_fly(current_state)
     
     return new_state, runs_scored
