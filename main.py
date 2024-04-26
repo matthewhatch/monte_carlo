@@ -24,15 +24,18 @@ def simulate_game(player):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--count', '-c', type=int, default=1000)
+    parser.add_argument('--verbose', '-v', action='store_true')
     args = parser.parse_args()
 
     simulations = args.count
     total_runs = 0
-    trout = Player(*TROUT16)
+    trout = Player(**TROUT16)
 
-    for _ in range(0, simulations):
+    for i in range(1, simulations + 1):
         runs_scored = simulate_game(trout)
         total_runs = total_runs + runs_scored
+        if args.verbose:
+            print(f'Simulating game {i} - Runs: {runs_scored}')
     
     average_runs = total_runs / simulations
     print(average_runs)

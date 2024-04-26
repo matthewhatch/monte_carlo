@@ -1,5 +1,5 @@
 import numpy as np
-from events import *#single, double, triple, home_run, error, free_pass, out_in_play, strike_out
+from events import *
 from constants.events import *
 
 class Player():
@@ -37,7 +37,6 @@ class Player():
         self.p_triple = triples / plate_appearences
         self.home_runs = home_runs
         self.p_home_run = home_runs / plate_appearences
-        self.probabilities = self.normalize_probabilites([self.p_error, self.p_out, self.p_strike_out, self.p_walk, self.p_hbp, self.p_single, self.p_double, self.p_triple, self.p_home_run])
     
     def normalize_probabilites(self, probabilities):
         total_prob = sum(probabilities)
@@ -48,7 +47,8 @@ class Player():
         runs_scored = 0
 
         outcomes = [ERROR, OUT, K, BB, HBP, SINGLE, DOUBLE, TRIPLE, HOME_RUN]
-        outcome = np.random.choice(outcomes, p=self.probabilities)
+        probabilities = self.normalize_probabilites([self.p_error, self.p_out, self.p_strike_out, self.p_walk, self.p_hbp, self.p_single, self.p_double, self.p_triple, self.p_home_run])
+        outcome = np.random.choice(outcomes, p=probabilities)
 
         if outcome == HOME_RUN:
             new_state, runs_scored = home_run(current_state)
