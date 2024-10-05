@@ -4,6 +4,7 @@
 import argparse
 from classes.Player import Player
 from constants.players import TROUT16
+from utils.players import get_stats
 
 def simulate_inning(player):
     runs = 0
@@ -25,14 +26,21 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--count', '-c', type=int, default=1000)
     parser.add_argument('--verbose', '-v', action='store_true')
+    parser.add_argument('--player', '-p', type=str, default='TROUT16')
+    parser.add_argument('--year', '-y', type=str, default='2016')
     args = parser.parse_args()
 
     simulations = args.count
     total_runs = 0
-    trout = Player(**TROUT16)
+    # trout = Player(**TROUT16)
+    player_stats = get_stats(args.player.lower(), args.year)
 
+    if player_stats is None:
+        exit(0)
+
+    player = Player(**player_stats)
     for i in range(1, simulations + 1):
-        runs_scored = simulate_game(trout)
+        runs_scored = simulate_game(player)
         total_runs = total_runs + runs_scored
         if args.verbose:
             print(f'Simulating game {i} - Runs: {runs_scored}')

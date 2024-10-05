@@ -1,11 +1,13 @@
 # Monte Carlo
 Motivated by the book Mathletics
 
-Currently, this is used to calculate Runs Created for Mike Trout in 2016.
+Data is pulled from baseball-reference.com and cached on local csv files by year
+
+Current Issues;
+- There is some logic issues for players with common last names.
 
 TODO:
-- Calculate RC for any player from any year
-- Determine where to pull stats for players
+- If a players stats page is not proceded by 01 because another player has a similar name, we need to use 02, 03, 04, etc
 
 ```bash
 # clone
@@ -20,5 +22,6 @@ source env/bin/activate
 pip install -r requirements.txt
 
 # run 100 simualtions
-python main.py -c 100
+python main.py -c 100 --player 'Mike Trout' --year 2016
+
 ```
