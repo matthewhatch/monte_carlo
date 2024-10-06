@@ -6,6 +6,24 @@ from constants.players import TROUT16
 from bs4 import BeautifulSoup
 from time import sleep
 
+def name_search(player_name):
+    print(f'Searching for {player_name} on baseball-reference.com')
+    # find player link on baseball-reference.com, base on player name
+    split_name = player_name.split(' ')
+    first_name = split_name[0].lower()
+    last_name = split_name[1].lower()
+    last_name_first_initial = last_name[0].lower()
+    url = f'https://www.baseball-reference.com/players/{last_name_first_initial}'
+    page = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+    soup = BeautifulSoup(page.content, 'html.parser')
+    player = soup.find('a', text=player_name.title())
+    if player is not None:
+        print(f'Found {player_name} on baseball-reference.com')
+        href = player['href']
+        player_id = href.split('/')[3].split('.')[0]
+        return player_id
+    return None
+
 def _get_from_csv(player_name, year):
     # Get Player stats from CSV
     # if file exists, get the player stats from the CSV
@@ -37,7 +55,14 @@ def get_stats(player_name, year):
 
     print(f'{player_name.title()} not cached for {year}, let the scraping begin')
     # if the player is not in the CSV, get the stats from the website
-    url = f'https://www.baseball-reference.com/players/gl.fcgi?id={last_name[0:5]}{first_name[0:2]}01&t=b&year={year}'
+    player_link = name_search(player_name)
+    if player_link is None:
+        # url = f'https://www.baseball-reference.com/players/gl.fcgi?id={last_name[0:5]}{first_name[0:2]}01&t=b&year={year}'
+        return None
+    else:
+        url = f'https://www.baseball-reference.com/players/gl.fcgi?id={player_link}&t=b&year={year}'
+
+    print(f'Getting stats from {url}')
     
     # Get the page, randomize the user agent
     page = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})

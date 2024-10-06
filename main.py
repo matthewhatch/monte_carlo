@@ -36,6 +36,7 @@ if __name__ == '__main__':
     player_stats = get_stats(args.player.lower(), args.year)
 
     if player_stats is None:
+        print(f'Player {args.player} not found')
         exit(0)
 
     player = Player(**player_stats)
