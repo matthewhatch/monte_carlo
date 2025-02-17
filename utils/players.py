@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from time import sleep
 
 def name_search(player_name):
-    print(f'Searching for {player_name} on baseball-reference.com')
+    print(f'Searching for {player_name.title()} on baseball-reference.com')
     # find player link on baseball-reference.com, base on player name
     split_name = player_name.split(' ')
     first_name = split_name[0].lower()
@@ -83,19 +83,30 @@ def get_stats(player_name, year):
             tfoot = soup.find('tfoot')
             
             # Get plate appearences using data-stat attribute
-            plate_appearences = tfoot.find('td', {'data-stat': 'PA'}).text
-            at_bats = tfoot.find('td', {'data-stat': 'AB'}).text
-            errors = tfoot.find('td', {'data-stat': 'ROE'}).text
-            strike_outs = tfoot.find('td', {'data-stat': 'SO'}).text
-            walks = tfoot.find('td', {'data-stat': 'BB'}).text
-            hbp = tfoot.find('td', {'data-stat': 'HBP'}).text
-            hits = tfoot.find('td', {'data-stat': 'H'}).text
-            doubles = tfoot.find('td', {'data-stat': '2B'}).text
-            triples = tfoot.find('td', {'data-stat': '3B'}).text
-            home_runs = tfoot.find('td', {'data-stat': 'HR'}).text
+            plate_appearences = tfoot.find('td', {'data-stat': 'b_pa'}).text
+            at_bats = tfoot.find('td', {'data-stat': 'b_ab'}).text
+            # errors = tfoot.find('td', {'data-stat': 'ROE'}).text
+            strike_outs = tfoot.find('td', {'data-stat': 'b_so'}).text
+            walks = tfoot.find('td', {'data-stat': 'b_bb'}).text
+            hbp = tfoot.find('td', {'data-stat': 'b_hbp'}).text
+            sac_flies = tfoot.find('td', {'data-stat': 'b_sf'}).text
+            sac_hits = tfoot.find('td', {'data-stat': 'b_sh'}).text
+            hits = tfoot.find('td', {'data-stat': 'b_h'}).text
+            doubles = tfoot.find('td', {'data-stat': 'b_doubles'}).text
+            triples = tfoot.find('td', {'data-stat': 'b_triples'}).text
+            home_runs = tfoot.find('td', {'data-stat': 'b_hr'}).text
 
             # calculate singles
             singles = int(hits) - int(doubles) - int(triples) - int(home_runs)
+
+            # calculate errors
+            ab_pa_diff = int(plate_appearences) - int(at_bats)
+            sac_hbp_bb_total = int(sac_flies) + int(sac_hits) + int(hbp) + int(walks)
+            if ab_pa_diff != sac_hbp_bb_total:
+                errors = ab_pa_diff - sac_hbp_bb_total
+            else:
+                errors = 0
+
             # calculate outs, based on AB - Singles - Doubles - Triples - Home Runs - Strike Outs - Errors
             outs = int(at_bats) - int(singles) - int(doubles) - int(triples) - int(home_runs) - int(strike_outs) - int(errors)
             

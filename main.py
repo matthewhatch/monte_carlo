@@ -26,17 +26,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--count', '-c', type=int, default=1000)
     parser.add_argument('--verbose', '-v', action='store_true')
-    parser.add_argument('--player', '-p', type=str, default='TROUT16')
+    parser.add_argument('--player', '-p', type=str, default='Mike Trout')
     parser.add_argument('--year', '-y', type=str, default='2016')
     args = parser.parse_args()
 
     simulations = args.count
     total_runs = 0
-    # trout = Player(**TROUT16)
+   
     player_stats = get_stats(args.player.lower(), args.year)
 
     if player_stats is None:
-        print(f'Player {args.player} not found for {args.year}')
+        print(f'Player {args.player.title()} not found for {args.year}')
         exit(0)
 
     player = Player(**player_stats)
