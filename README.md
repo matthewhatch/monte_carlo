@@ -1,4 +1,5 @@
 # Monte Carlo
+Generate Runs Created(RC) for any player, in any year in Major Leage Baseball
 Motivated by the book Mathletics
 
 Data is pulled from baseball-reference.com and cached on local csv files by year
