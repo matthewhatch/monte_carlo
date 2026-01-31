@@ -14,7 +14,11 @@ def name_search(player_name):
     last_name = split_name[1].lower()
     last_name_first_initial = last_name[0].lower()
     url = f'https://www.baseball-reference.com/players/{last_name_first_initial}'
-    page = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+    try:
+        page = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+    except Exception as e:
+        raise e
+    
     soup = BeautifulSoup(page.content, 'html.parser')
     player = soup.find('a', text=player_name.title())
     if player is not None:
@@ -58,7 +62,7 @@ def get_stats(player_name, year):
     # if the player is not in the CSV, get the stats from the website
     player_link = name_search(player_name)
     if player_link is None:
-        # url = f'https://www.baseball-reference.com/players/gl.fcgi?id={last_name[0:5]}{first_name[0:2]}01&t=b&year={year}'
+        raise Exception(f'Player {player_name.title()} not found on baseball-reference.com')
         return None
     else:
         url = f'https://www.baseball-reference.com/players/gl.fcgi?id={player_link}&t=b&year={year}'
@@ -146,3 +150,5 @@ def get_stats(player_name, year):
         except Exception as e:
             print(f'Error getting stats for {player_name.title()}: {e}')
             print(f'Data for {player_name.title()} not found for {year}')
+            raise e
+            return None

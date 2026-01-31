@@ -37,8 +37,7 @@ if __name__ == '__main__':
     player_stats = get_stats(args.player.lower(), args.year)
 
     if player_stats is None:
-        print(f'Player {args.player.title()} not found for {args.year}')
-        exit(0)
+        raise Exception(f'Player {args.player.title()} not found for {args.year}')  
 
     player = Player(**player_stats)
     for i in tqdm(range(1, simulations + 1)):
