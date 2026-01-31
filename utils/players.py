@@ -16,11 +16,11 @@ def name_search(player_name):
     url = f'https://www.baseball-reference.com/players/{last_name_first_initial}'
     try:
         page = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+        soup = BeautifulSoup(page.content, 'html.parser')
+        player = soup.find('a', text=player_name.title())
     except Exception as e:
         raise e
-    
-    soup = BeautifulSoup(page.content, 'html.parser')
-    player = soup.find('a', text=player_name.title())
+
     if player is not None:
         print(f'Found {player_name} on baseball-reference.com')
         href = player['href']
