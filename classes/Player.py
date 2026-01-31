@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from events import *
 from constants.events import *
 
@@ -42,6 +43,12 @@ class Player():
         total_prob = sum(probabilities)
         return [p / total_prob for p in probabilities]
     
+    def runs_created(self, rc):
+        if rc == None:
+            return self.runs_created
+        
+        self.runs_created = rc
+    
     def simulate_ab(self, current_state):
         new_state = [current_state[0],0,0,0]
         runs_scored = 0
@@ -70,3 +77,9 @@ class Player():
             new_state = current_state
 
         return new_state, runs_scored
+    
+    def __str__(self) -> str:
+        player_df = pd.DataFrame(self.__dict__, index=[0])
+        # only return columns that don't start with 'p_'
+        player_df = player_df.drop(player_df.filter(regex='p_').columns, axis=1)
+        return player_df.to_string(index=False)
