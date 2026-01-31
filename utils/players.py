@@ -36,6 +36,8 @@ def _get_from_csv(player_name, year):
             # remove name column
             print(f'Getting stats for {player_name} from CSV')
             player = player.drop(columns=['name'])
+            for item in player.columns:
+                print(f'{item}: {player[item].values[0]}')
             return player.to_dict(orient='records')[0]
     else:
         return None
@@ -81,7 +83,7 @@ def get_stats(player_name, year):
         try:
              # Get tfoot tag
             tfoot = soup.find('tfoot')
-            
+
             # Get plate appearences using data-stat attribute
             plate_appearences = tfoot.find('td', {'data-stat': 'b_pa'}).text
             at_bats = tfoot.find('td', {'data-stat': 'b_ab'}).text
@@ -123,6 +125,8 @@ def get_stats(player_name, year):
                 "triples": int(triples),
                 "home_runs": int(home_runs)
             }
+            for item in results:
+                print(f'{item}: {results[item]}')
 
             # append line to csv with data in the order of the columns, adding the name first
             results['name'] = player_name.lower()
@@ -143,4 +147,5 @@ def get_stats(player_name, year):
             return results
         
         except Exception as e:
+            print(f'Error getting stats for {player_name.title()}: {e}')
             print(f'Data for {player_name.title()} not found for {year}')
