@@ -4,6 +4,7 @@
 import argparse
 from classes.Player import Player
 from constants.players import TROUT16
+from tqdm import tqdm
 from utils.players import get_stats
 
 def simulate_inning(player):
@@ -40,12 +41,13 @@ if __name__ == '__main__':
         exit(0)
 
     player = Player(**player_stats)
-    for i in range(1, simulations + 1):
+    for i in tqdm(range(1, simulations + 1)):
         runs_scored = simulate_game(player)
         total_runs = total_runs + runs_scored
         if args.verbose:
             print(f'Simulating game {i} - Runs: {runs_scored}')
     
     average_runs = total_runs / simulations
-    print(average_runs)
+    player.runs_created(average_runs)
+    print(str(player))
 
