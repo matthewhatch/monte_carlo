@@ -1,5 +1,5 @@
 import unittest
-from events import medium_single
+from monte_carlo.events import medium_single
 
 class TestMediumSingle(unittest.TestCase):
     def test_medium_no_outs_empty(self):

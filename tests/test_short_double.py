@@ -1,5 +1,5 @@
 import unittest
-from events import short_double
+from monte_carlo.events import short_double
 
 class TestShortDouble(unittest.TestCase):
     def test_short_double_no_outs_runner_on_2(self):

@@ -1,5 +1,5 @@
 import numpy as np
-from constants.events import *
+from .constants.events import *
 
 def single(current_state):
     types = [SHORT_SINGLE, MEDIUM_SINGLE, LONG_SINGLE]

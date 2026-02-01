@@ -1,5 +1,5 @@
 import unittest
-from events import strike_out
+from monte_carlo.events import strike_out
 
 class TestStrikeOut(unittest.TestCase):
     def test_strike_out(self):
