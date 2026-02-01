@@ -55,5 +55,5 @@ jobs:
       run: poetry run python setup_test_data.py
 
     - name: run main script
-      run: poetry run python main.py
+      run: poetry run python main.py -c 10
 
