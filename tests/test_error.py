@@ -1,5 +1,5 @@
 import unittest
-from events import error
+from monte_carlo.events import error
 
 class TestError(unittest.TestCase):
     def test_error_no_outs_empty(self):

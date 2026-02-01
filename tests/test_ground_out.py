@@ -1,5 +1,5 @@
 import unittest
-from events import ground_out
+from monte_carlo.events import ground_out
 
 class TestGroundOut(unittest.TestCase):
     def test_ground_out_no_outs_empty(self):

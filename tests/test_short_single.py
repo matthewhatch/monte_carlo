@@ -1,5 +1,5 @@
 import unittest
-from events import single, short_single
+from monte_carlo.events import single, short_single
 
 class TestBaseballFunctions(unittest.TestCase):
     

@@ -1,5 +1,5 @@
 import unittest
-from events import long_double
+from monte_carlo.events import long_double
 
 class TestLongDouble(unittest.TestCase):
     def test_long_double_no_outs_empty(self):

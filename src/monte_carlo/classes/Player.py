@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
-from events import *
-from constants.events import *
+from ..events import *
+from ..constants.events import *
 
 class Player():
     def __init__(
