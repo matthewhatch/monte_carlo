@@ -52,7 +52,7 @@ jobs:
       run: poetry run python -m unittest discover -s tests -p "test_*.py" -v
 
     - name: Setup test data
-      run: python setup_test_data.py
+      run: poetry run python setup_test_data.py
 
     - name: run main script
       run: poetry run python main.py
