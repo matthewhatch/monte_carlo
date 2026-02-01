@@ -17,6 +17,7 @@ def name_search(player_name):
     try:
         print(f'Getting page from {url}')
         page = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+        print(f'Page status code: {page.status_code}')
         soup = BeautifulSoup(page.content, 'html.parser')
         player = soup.find('a', text=player_name.title())
     except Exception as e:
