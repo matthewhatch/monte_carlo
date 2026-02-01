@@ -6,6 +6,23 @@ from constants.players import TROUT16
 from bs4 import BeautifulSoup
 from time import sleep
 
+# Check if running in CI/CD environment
+IS_CI = os.getenv('CI') is not None
+
+def create_csv_from_constant(player_name, year, stats_dict):
+    """Create a CSV file from player stats dictionary"""
+    stats_dict['name'] = player_name.lower()
+    columns_order = ['name'] + [col for col in stats_dict if col != 'name']
+    df = pd.DataFrame(stats_dict, index=[0])[columns_order]
+    
+    csv_path = f'data/players_{year}.csv'
+    if not os.path.isfile(csv_path):
+        df.to_csv(csv_path, index=False)
+        print(f'Created {csv_path}')
+    else:
+        df.to_csv(csv_path, mode='a', header=False, index=False)
+        print(f'Appended to {csv_path}')
+
 def name_search(player_name):
     print(f'Searching for {player_name.title()} on baseball-reference.com')
     # find player link on baseball-reference.com, base on player name
@@ -15,7 +32,9 @@ def name_search(player_name):
     last_name_first_initial = last_name[0].lower()
     url = f'https://www.baseball-reference.com/players/{last_name_first_initial}'
     try:
+        print(f'Getting page from {url}')
         page = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+        print(f'Page status code: {page.status_code}')
         soup = BeautifulSoup(page.content, 'html.parser')
         player = soup.find('a', text=player_name.title())
     except Exception as e:
@@ -57,6 +76,10 @@ def get_stats(player_name, year):
     player = _get_from_csv(player_name, year)
     if player is not None:
         return player
+
+    # Skip web scraping in CI/CD environments
+    if IS_CI:
+        raise Exception(f'Player {player_name.title()} not found in cached data for {year}. Web scraping is disabled in CI/CD environments.')
 
     print(f'{player_name.title()} not cached for {year}, let the scraping begin')
     # if the player is not in the CSV, get the stats from the website
