@@ -15,6 +15,7 @@ def name_search(player_name):
     last_name_first_initial = last_name[0].lower()
     url = f'https://www.baseball-reference.com/players/{last_name_first_initial}'
     try:
+        print(f'Getting page from {url}')
         page = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
         soup = BeautifulSoup(page.content, 'html.parser')
         player = soup.find('a', text=player_name.title())
