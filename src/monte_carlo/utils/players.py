@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 import os
 
-from constants.players import TROUT16
+from ..constants.players import TROUT16
 from bs4 import BeautifulSoup
 from time import sleep
 

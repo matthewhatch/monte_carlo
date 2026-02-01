@@ -2,8 +2,8 @@
 """Generate CSV files from player constants for testing"""
 
 import os
-from utils.players import create_csv_from_constant
-from constants.players import TROUT16
+from monte_carlo.utils.players import create_csv_from_constant
+from monte_carlo.constants.players import TROUT16
 
 # Create data directory if it doesn't exist
 os.makedirs('data', exist_ok=True)

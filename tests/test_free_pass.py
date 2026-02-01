@@ -1,5 +1,5 @@
 import unittest
-from events import free_pass
+from monte_carlo.events import free_pass
 
 class TestFreePass(unittest.TestCase):
     def test_free_pass_no_outs_empty(self):
