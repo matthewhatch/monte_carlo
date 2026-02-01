@@ -50,3 +50,6 @@ jobs:
     - name: Run tests
       run: poetry run python -m unittest discover -s tests -p "test_*.py" -v
 
+    - name: run main script
+      run: poetry run python main.py
+
