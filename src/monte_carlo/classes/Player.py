@@ -101,6 +101,7 @@ class Player():
         Returns:
             list[float]: Normalized probabilities that sum to 1.0.
         """
+        total_prob = sum(probabilities)
         return [p / total_prob for p in probabilities]
     
     def runs_created(self, rc):
