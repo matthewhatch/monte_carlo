@@ -1,3 +1,14 @@
+"""Pre-defined player stat dictionaries for testing and offline use.
+
+Each constant is a dictionary whose keys match the constructor parameters of
+:class:`~monte_carlo.classes.Player.Player`.  These can be used directly
+without a CSV file or network access.
+
+Available constants
+-------------------
+TROUT16 : Mike Trout's 2016 season statistics.
+"""
+
 TROUT16 = {
     "plate_appearences": 681,
     "at_bats": 554,

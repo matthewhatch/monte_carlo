@@ -1,3 +1,16 @@
+"""Player data retrieval utilities.
+
+Provides a two-stage lookup pipeline:
+
+1. Check the local CSV cache at ``data/players_{year}.csv``.
+2. If not found and not running in a CI/CD environment, scrape
+   `baseball-reference.com <https://www.baseball-reference.com>`_ and cache
+   the result for future use.
+
+Set the ``CI`` environment variable to any non-empty value to disable web
+scraping (GitHub Actions sets this automatically).
+"""
+
 import requests
 import pandas as pd
 import os
@@ -10,7 +23,22 @@ from time import sleep
 IS_CI = os.getenv('CI') is not None
 
 def create_csv_from_constant(player_name, year, stats_dict):
-    """Create a CSV file from player stats dictionary"""
+    """Create or append to a per-year CSV from a stats dictionary.
+
+    Useful for generating test/CI data from the pre-defined player constants
+    without any web scraping.
+
+    Args:
+        player_name (str): Lowercase player name (e.g. ``'mike trout'``).
+            Added as the ``name`` column.
+        year (str): Four-digit season year used in the filename
+            ``data/players_{year}.csv``.
+        stats_dict (dict): Stats dictionary matching the CSV column schema.
+
+    Side effects:
+        Creates ``data/players_{year}.csv`` if it does not exist; otherwise
+        appends a row without writing the header again.
+    """
     stats_dict['name'] = player_name.lower()
     columns_order = ['name'] + [col for col in stats_dict if col != 'name']
     df = pd.DataFrame(stats_dict, index=[0])[columns_order]
@@ -24,7 +52,22 @@ def create_csv_from_constant(player_name, year, stats_dict):
         print(f'Appended to {csv_path}')
 
 def name_search(player_name):
-    print(f'Searching for {player_name.title()} on baseball-reference.com')
+    """Search baseball-reference.com for a player's unique profile ID.
+
+    Visits ``https://www.baseball-reference.com/players/{last_initial}`` and
+    finds the anchor tag matching the player's full name.
+
+    Args:
+        player_name (str): Lowercase full player name (e.g. ``'mike trout'``).
+
+    Returns:
+        str | None: The player's baseball-reference ID (e.g. ``'troutmi01'``);
+        ``None`` if the player is not found on the page.
+
+    Raises:
+        Exception: Re-raises any network or parsing exception encountered
+            during the HTTP request.
+    """
     # find player link on baseball-reference.com, base on player name
     split_name = player_name.split(' ')
     first_name = split_name[0].lower()
@@ -48,8 +91,17 @@ def name_search(player_name):
     return None
 
 def _get_from_csv(player_name, year):
-    # Get Player stats from CSV
-    # if file exists, get the player stats from the CSV
+    """Read player stats from the local CSV cache.
+
+    Args:
+        player_name (str): Lowercase player name.
+        year (str): Four-digit season year.
+
+    Returns:
+        dict | None: Stats dictionary (without the ``name`` column) if the
+        player is found; ``None`` if the file does not exist or the player
+        is not present.
+    """
     if os.path.isfile(f'data/players_{year}.csv'):
         df = pd.read_csv(f'data/players_{year}.csv')
         player = df[(df['name'] == player_name.lower())]
@@ -65,8 +117,27 @@ def _get_from_csv(player_name, year):
         return None
 
 def get_stats(player_name, year):
-    print(f'Getting stats for {player_name}')
-    # Get Player stats from https://www.baseball-reference.com
+    """Retrieve a player's seasonal statistics.
+
+    Checks the local CSV cache first.  If not found and the environment is not
+    CI, scrapes baseball-reference.com, caches the result, and returns it.
+
+    Args:
+        player_name (str): Lowercase full player name (e.g. ``'mike trout'``).
+        year (str): Four-digit season year (e.g. ``'2016'``).
+
+    Returns:
+        dict | None: Stats dictionary with keys:
+        ``plate_appearences``, ``at_bats``, ``errors``, ``outs``,
+        ``strike_outs``, ``walks``, ``hbp``, ``singles``, ``doubles``,
+        ``triples``, ``home_runs``.  Returns ``None`` if the player is not
+        found and scraping is unavailable.
+
+    Raises:
+        Exception: If running in CI and the player is not in the local cache.
+        Exception: If the player is not found on baseball-reference.com.
+        Exception: Re-raises scraping/parsing exceptions on failure.
+    """
     # https://www.baseball-reference.com/players/gl.fcgi?id=troutmi01&t=b&year=2013
     split_name = player_name.split(' ')
     first_name = split_name[0].lower()
