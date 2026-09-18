@@ -1,3 +1,27 @@
+"""String constants for all plate appearance outcome types.
+
+These constants are used throughout :mod:`~monte_carlo.events` and
+:class:`~monte_carlo.classes.Player.Player` to identify event types in a
+readable, refactor-safe way.
+
+Primary outcomes
+----------------
+HOME_RUN, TRIPLE, DOUBLE, SINGLE, BB (walk), HBP, K (strikeout), OUT, ERROR
+
+Single sub-types
+----------------
+SHORT_SINGLE, MEDIUM_SINGLE, LONG_SINGLE
+
+Double sub-types
+----------------
+SHORT_DOUBLE, LONG_DOUBLE
+
+Out sub-types
+-------------
+GROUND_OUT, LINE_OUT, FLY_OUT, GIDP, SHORT_FLY, MEDIUM_FLY, LONG_FLY
+"""
+
+
 HOME_RUN = 'HOME_RUN'
 TRIPLE = 'TRIPLE'
 DOUBLE = 'DOUBLE'
