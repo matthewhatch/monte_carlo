@@ -116,7 +116,7 @@ def _get_from_csv(player_name, year):
     else:
         return None
 
-def get_stats(player_name, year):
+def get_stats(player_name, year, force_refresh=False):
     """Retrieve a player's seasonal statistics.
 
     Checks the local CSV cache first.  If not found and the environment is not
@@ -143,10 +143,12 @@ def get_stats(player_name, year):
     first_name = split_name[0].lower()
     last_name = split_name[1].lower()
 
+    # if force_refresh is True, skip the CSV and go straight to scraping
+    if not force_refresh:
     # Get the player stats from CSV
-    player = _get_from_csv(player_name, year)
-    if player is not None:
-        return player
+        player = _get_from_csv(player_name, year)
+        if player is not None:
+            return player
 
     # Skip web scraping in CI/CD environments
     if IS_CI:

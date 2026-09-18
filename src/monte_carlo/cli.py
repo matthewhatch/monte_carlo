@@ -69,12 +69,13 @@ def main():
     parser.add_argument('--verbose', '-v', action='store_true')
     parser.add_argument('--player', '-p', type=str, default='Mike Trout')
     parser.add_argument('--year', '-y', type=str, default='2016')
+    parser.add_argument('--force-refresh', '-f', action='store_true', help='Force refresh of player stats from baseball-reference.com')
     args = parser.parse_args()
 
     simulations = args.count
     total_runs = 0
    
-    player_stats = get_stats(args.player.lower(), args.year)
+    player_stats = get_stats(args.player.lower(), args.year, force_refresh=args.force_refresh)
 
     if player_stats is None:
         raise Exception(f'Player {args.player.title()} not found for {args.year}')  
