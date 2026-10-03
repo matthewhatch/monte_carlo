@@ -47,7 +47,7 @@ def simulate_game(player):
         runs = runs + inning_runs
     return runs
 
-def main():
+def main(default_player='Mike Trout', default_year='2016', default_count=1000):
     """Console-script entry point for the ``monte-carlo`` command.
 
     Parses command-line arguments, retrieves player statistics via
@@ -65,10 +65,10 @@ def main():
             baseball-reference.com.
     """
     parser = argparse.ArgumentParser(prog='monte-carlo', description='Monte Carlo Simulator for MLB player performance')
-    parser.add_argument('--count', '-c', type=int, default=1000)
+    parser.add_argument('--count', '-c', type=int, default=default_count)
     parser.add_argument('--verbose', '-v', action='store_true')
-    parser.add_argument('--player', '-p', type=str, default='Mike Trout')
-    parser.add_argument('--year', '-y', type=str, default='2016')
+    parser.add_argument('--player', '-p', type=str, default=default_player)
+    parser.add_argument('--year', '-y', type=str, default=default_year)
     parser.add_argument('--force-refresh', '-f', action='store_true', help='Force refresh of player stats from baseball-reference.com')
     args = parser.parse_args()
 
